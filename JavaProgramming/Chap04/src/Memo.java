@@ -1,16 +1,36 @@
+/**
+ * 객체지향언어2 8반
+ * 과제2. 4장 클래스 만들기 - 1번
+ * 2171333 이경민
+ */
 public class Memo {
     private String name, time, content;
 
+    /**
+     * Memo Class 생성자
+     * @param name
+     * @param time
+     * @param content
+     */
     public Memo(String name, String time, String content) {
         this.name = name;
         this.time = time;
         this.content = content;
     }
 
+    /**
+     * 메모 출력 함수
+     * <p>이름, 시간, 메모 출력
+     */
     private void show() {
-        System.out.println();
+        System.out.println(name + " " + time + " " + content);
     }
 
+    /**
+     * 같은 이름인지 판단
+     * @param otherMemo
+     * @return 같으면 true, 다르면 false
+     */
     private boolean isSameName(Memo otherMemo) {
         if (this.name.equals(otherMemo.name)) {
             return true;
@@ -19,9 +39,12 @@ public class Memo {
         }
     }
 
+    /**
+     * 텍스트 길이 반환
+     * @return 현재 memo의 텍스트 길이
+     */
     private int length() {
-        int len = 0;
-        return len;
+        return this.content.length();
     }
 
     public static void main(String[] args) {

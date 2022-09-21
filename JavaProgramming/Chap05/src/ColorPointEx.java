@@ -14,6 +14,9 @@ class Point {
 class ColorPoint extends Point {
     private String color;
 
+    public ColorPoint() {
+    }
+
     public void setColor(String color) {
         this.color = color;
     }
