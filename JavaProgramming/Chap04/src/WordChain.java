@@ -24,7 +24,7 @@ class Player {
     public String getWord() {
         return word;
     }
-ㄹ
+
     public boolean checkSuccess(String previousWord) {
         int lastIdx = previousWord.length() - 1;
         if (previousWord.charAt(lastIdx) == this.word.charAt(0)) {

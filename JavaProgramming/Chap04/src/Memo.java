@@ -1,6 +1,17 @@
+/**
+ * 객체지향언어2 8반
+ * 과제2. 4장 클래스 만들기 - 1번
+ * 2171333 이경민
+ */
 public class Memo {
     private String name, time, content;
 
+    /**
+     * Memo Class 생성자
+     * @param name
+     * @param time
+     * @param content
+     */
     public Memo(String name, String time, String content) {
         this.name = name;
         this.time = time;
@@ -8,7 +19,7 @@ public class Memo {
     }
 
     private void show() {
-        System.out.println();
+        System.out.println(name + " " + time + " " + content);
     }
 
     private boolean isSameName(Memo otherMemo) {
@@ -20,8 +31,7 @@ public class Memo {
     }
 
     private int length() {
-        int len = 0;
-        return len;
+        return this.content.length();
     }
 
     public static void main(String[] args) {

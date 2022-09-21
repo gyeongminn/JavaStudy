@@ -4,9 +4,9 @@ public class PP0316 {
     public static void main(String[] args) {
         System.out.println("컴퓨터와 가위 바위 보 게임을 합니다.");
         System.out.print("가위 바위 보! >> ");
+
         Scanner scanner = new Scanner(System.in);
         String s = scanner.nextLine();
-
         if (s.equals("그만")) {
             return;
         }
