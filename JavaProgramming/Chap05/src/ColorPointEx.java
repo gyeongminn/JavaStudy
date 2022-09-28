@@ -1,7 +1,7 @@
 class Point {
     private int x, y;
 
-    public void set(int x, int y) {
+    public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -14,13 +14,10 @@ class Point {
 class ColorPoint extends Point {
     private String color;
 
-    public ColorPoint() {
-    }
-
-    public void setColor(String color) {
+    public ColorPoint(int x, int y, String color) {
+        super(x, y);
         this.color = color;
     }
-
     public void showPoint() {
         super.showPoint();
         System.out.println(color);
@@ -29,13 +26,10 @@ class ColorPoint extends Point {
 
 public class ColorPointEx {
     public static void main(String[] args) {
-        Point p = new Point();
-        p.set(2, 3);
+        Point p = new Point(2, 3);
         p.showPoint();
 
-        ColorPoint cp = new ColorPoint();
-        cp.set(5, 6);
-        cp.setColor("red");
+        ColorPoint cp = new ColorPoint(5, 6, "Red");
         cp.showPoint();
     }
 }
