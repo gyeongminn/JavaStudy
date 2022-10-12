@@ -5,6 +5,7 @@ import java.util.LinkedList;
 enum LottoType {
     AUTO, SELF
 }
+
 public class LottoSim {
     LottoCard[] lottoCards;
 
@@ -18,8 +19,6 @@ public class LottoSim {
         System.out.print("수동 로또 몇 개를 구매하시겠습니까? >> ");
         int selfNum = scanner.nextInt();
         System.out.println();
-
-
 
         Queue<LottoType> queue = new LinkedList<>();
 
