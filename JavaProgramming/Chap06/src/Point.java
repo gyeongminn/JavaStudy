@@ -1,8 +1,4 @@
-import lib.Calculator;
-
 import java.util.Calendar;
-import java.util.Scanner;
-import java.util.StringTokenizer;
 
 class Point {
     private int x, y;
@@ -39,7 +35,7 @@ class ObjEx {
     public static void main(String[] args) {
         Calendar c = Calendar.getInstance();
         System.out.println(c.get(Calendar.YEAR));
-        System.out.println(c.get(Calendar.MONTH)+1);
+        System.out.println(c.get(Calendar.MONTH) + 1);
         System.out.println(c.get(Calendar.DATE));
         System.out.println(c.get(Calendar.HOUR));
         System.out.println(c.get(Calendar.MINUTE));
