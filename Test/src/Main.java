@@ -1,24 +1,23 @@
-import java.util.Scanner;
+class Apple {
+}
 
-public class Main {
-    private void init() {
-        private Scanner s = new Scanner(System.in);
-        System.out.println("TV 이름을 정해주세요>> ");
-        tv = new TV(s.next());
+class Banana {
+}
+
+class FruitBox {
+    private Object fruit;
+
+    public FruitBox(Object fruit) {
+        this.fruit = fruit;
     }
 
-    private void run() {
-        init();
-        tv.channelUp();
-        tv.powerChange();
-        tv.channelDown();
-        tv.volumeUp();
-        tv.volumeDown();
-        tv.powerChange();
+    public Object getFruit() {
+        return fruit;
     }
 
     public static void main(String[] args) {
-        Main tv = new Main();
-        tv.run();
+        FruitBox appleBox = new FruitBox(new Apple());
+        FruitBox banBox = new FruitBox(new Apple());
+
     }
 }
