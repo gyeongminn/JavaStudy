@@ -1,10 +1,21 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameFrame extends JFrame {
-    private JButton startBtn = new JButton("Start");
+    private ImageIcon normalIcon = new ImageIcon("normal.png");
+    private ImageIcon overedIcon = new ImageIcon("overed.png");
+    private ImageIcon pressedIcon = new ImageIcon("pressed.png");
+
+    private JButton startBtn = new JButton(normalIcon);
     private JButton pauseBtn = new JButton("Pause");
+
     private ScorePanel scorePanel = new ScorePanel();
+    private EditPanel editPanel = new EditPanel();
+
+    private WordList wordList = new WordList();
+    private GamePanel gamePanel = new GamePanel(wordList, scorePanel);
 
     public GameFrame() {
         initMenuBar();
@@ -47,6 +58,17 @@ public class GameFrame extends JFrame {
 
         toolBar.add(startBtn);
         toolBar.add(pauseBtn);
+
+        startBtn.setPressedIcon(pressedIcon);
+        startBtn.setRolloverIcon(overedIcon);
+        startBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String word = wordList.getWord();
+                gamePanel.setWord(word);
+            }
+        });
+
         toolBar.add(new JTextField(20));
         toolBar.add(new JLabel("점심"));
         toolBar.add(new JCheckBox());
@@ -63,8 +85,11 @@ public class GameFrame extends JFrame {
         JSplitPane verticalPane = new JSplitPane();
         verticalPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         verticalPane.setDividerLocation(300);
-        verticalPane.setTopComponent(scorePanel);
 
+        horizontalPane.setLeftComponent(gamePanel);
         horizontalPane.setRightComponent(verticalPane);
+
+        verticalPane.setTopComponent(scorePanel);
+        verticalPane.setBottomComponent(editPanel);
     }
 }
