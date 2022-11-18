@@ -2,20 +2,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Vector;
 
 public class GamePanel extends JPanel {
-    private JTextField inputField = new JTextField(20);
-    private JLabel wordLabel = new JLabel("이곳에 단어가 등장합니다.");
 
-    // wordLabel 은 groundPanel 보다 먼저 생성되어야 한다.
+    private final int MAX_WORDS = 30;
+    private final int LABEL_WIDTH = 150;
+    private final int LABEL_HEIGHT = 40;
+
+    private JTextField inputField = new JTextField(MAX_WORDS);
+    WordList wordList;
+    private Vector<Word> currentWords = new Vector<>(MAX_WORDS);
     private GroundPanel groundPanel = new GroundPanel();
+    private GameThread gameThread = null;
 
-    private WordList wordList = null;
-    private ScorePanel scorePanel = null;
 
     public GamePanel(WordList wordList, ScorePanel scorePanel) {
         this.wordList = wordList;
-        this.scorePanel = scorePanel;
 
         setLayout(new BorderLayout());
         add(groundPanel, BorderLayout.CENTER);
@@ -23,31 +27,93 @@ public class GamePanel extends JPanel {
         JPanel inputPanel = new JPanel();
         inputPanel.setBackground(Color.GRAY);
         inputPanel.add(inputField, BorderLayout.SOUTH);
+        add(inputPanel, BorderLayout.SOUTH);
 
         inputField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JTextField textField = (JTextField) e.getSource();
-                if (textField.getText().equals(wordLabel.getText())) {
-                    scorePanel.increase();
-                    setWord(wordList.getWord());
-                } else {
-                    scorePanel.decrease();
+                Iterator<Word> iterator = currentWords.iterator();
+                while (iterator.hasNext()) {
+                    Word word = iterator.next();
+                    if (textField.getText().equals(word.getName())) {
+                        scorePanel.increase();
+                        word.setY(groundPanel.getHeight());
+                        break;
+                    }
                 }
                 textField.setText("");
             }
         });
-        add(inputPanel, BorderLayout.SOUTH);
     }
 
-    public void setWord(String word) {
-        wordLabel.setText(word);
+    public void startGame() {
+        if (gameThread == null) {
+            gameThread = new GameThread();
+            gameThread.start();
+        }
     }
+
+    private void addWord() {
+        int x = (int) (Math.random() * (groundPanel.getWidth() - LABEL_WIDTH / 2));
+        Word word = new Word(wordList.getWord(), x, 0, Math.random() / 20 + 0.01);
+        currentWords.add(word);
+        addLabel(word);
+    }
+
+    private void addLabel(Word word) {
+        JLabel label = word.getLabel();
+        label.setSize(LABEL_WIDTH, LABEL_HEIGHT);
+        label.setLocation(getX(), 0);
+        label.setFont(new Font("Gothic", Font.PLAIN, 20));
+        label.setForeground(word.getColor());
+        groundPanel.add(label);
+    }
+
+    public void setWords() {
+        Iterator<Word> iterator = currentWords.iterator();
+        while (iterator.hasNext()) {
+            Word word = iterator.next();
+            word.setY(word.getY() + word.getSpeed());
+            JLabel label = word.getLabel();
+            label.setLocation((int) (word.getX()), (int) word.getY());
+            if (label.getY() >= groundPanel.getHeight()) {
+                groundPanel.remove(label);
+                iterator.remove();
+            }
+        }
+    }
+
 
     class GroundPanel extends JPanel {
 
         public GroundPanel() {
-            add(wordLabel);
+//            add(wordLabel);
+        }
+    }
+
+
+    class GameThread extends Thread {
+
+        public GameThread() {
+            super("GameThread");
+        }
+
+        @Override
+        public void run() {
+            int count = 0;
+            while (true) {
+                try {
+                    if (count % 1500 == 0) {
+                        addWord();
+                    }
+                    setWords();
+                    count++;
+                    sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 }

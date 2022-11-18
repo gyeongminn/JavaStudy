@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 public class GameFrame extends JFrame {
     private ImageIcon normalIcon = new ImageIcon("normal.png");
@@ -26,7 +27,7 @@ public class GameFrame extends JFrame {
 
     private void initFrame() {
         setTitle("단어 게임");
-        setSize(800, 600);
+        setSize(1000, 800);
         setResizable(false);
         setVisible(true);
     }
@@ -64,8 +65,7 @@ public class GameFrame extends JFrame {
         startBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String word = wordList.getWord();
-                gamePanel.setWord(word);
+                gamePanel.startGame();
             }
         });
 

@@ -27,6 +27,7 @@ public class MyApp extends JFrame {
 
         TimerThread thread1 = new TimerThread("lee", text1, 100);
         thread1.start();
+
         TimerThread thread2 = new TimerThread("kim", text2, 1000);
         thread2.start();
 
