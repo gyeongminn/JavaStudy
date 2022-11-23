@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 public class GameFrame extends JFrame {
     private ImageIcon normalIcon = new ImageIcon("normal.png");
@@ -28,6 +27,7 @@ public class GameFrame extends JFrame {
     private void initFrame() {
         setTitle("단어 게임");
         setSize(1000, 800);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
     }

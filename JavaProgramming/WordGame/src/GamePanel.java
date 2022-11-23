@@ -33,9 +33,7 @@ public class GamePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JTextField textField = (JTextField) e.getSource();
-                Iterator<Word> iterator = currentWords.iterator();
-                while (iterator.hasNext()) {
-                    Word word = iterator.next();
+                for (Word word : currentWords) {
                     if (textField.getText().equals(word.getName())) {
                         scorePanel.increase();
                         word.setY(groundPanel.getHeight());
@@ -56,7 +54,7 @@ public class GamePanel extends JPanel {
 
     private void addWord() {
         int x = (int) (Math.random() * (groundPanel.getWidth() - LABEL_WIDTH / 2));
-        Word word = new Word(wordList.getWord(), x, 0, Math.random() / 20 + 0.01);
+        Word word = new Word(wordList.getWord(), x, 0, Math.random() / 20 + 0.05);
         currentWords.add(word);
         addLabel(word);
     }
@@ -84,11 +82,10 @@ public class GamePanel extends JPanel {
         }
     }
 
-
     class GroundPanel extends JPanel {
 
         public GroundPanel() {
-//            add(wordLabel);
+            setBackground(Color.GRAY);
         }
     }
 
