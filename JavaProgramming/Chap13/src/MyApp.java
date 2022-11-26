@@ -60,6 +60,7 @@ public class MyApp extends JFrame {
 
         @Override
         public void run() {
+            System.out.println(Thread.currentThread());
             while (true) {
                 try {
                     sleep(delay);
@@ -79,7 +80,8 @@ public class MyApp extends JFrame {
     }
 
     public static void main(String[] args) {
-        System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getPriority());
+        System.out.println(Thread.currentThread());
+        //System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getPriority());
         new MyApp();
     }
 }

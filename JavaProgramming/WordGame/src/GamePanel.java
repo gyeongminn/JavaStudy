@@ -54,7 +54,7 @@ public class GamePanel extends JPanel {
 
     private void addWord() {
         int x = (int) (Math.random() * (groundPanel.getWidth() - LABEL_WIDTH / 2));
-        Word word = new Word(wordList.getWord(), x, 0, Math.random() / 20 + 0.05);
+        Word word = new Word(wordList.getWord(), x, 0, Math.random() / 20 + 0.1);
         currentWords.add(word);
         addLabel(word);
     }
@@ -101,7 +101,7 @@ public class GamePanel extends JPanel {
             int count = 0;
             while (true) {
                 try {
-                    if (count % 1500 == 0) {
+                    if (count % 1000 == 0) {
                         addWord();
                     }
                     setWords();

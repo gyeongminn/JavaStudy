@@ -10,7 +10,8 @@ interface Calculate {
 public class Ex2 {
 
     public static void main(String[] args) {
-        Calculate calculate = (int a, int b) -> a + b;
+        //Calculate calculate = (int a, int b) -> a + b;
+        Calculate calculate = Integer::sum;
         System.out.println(calculate.add(1, 2));
 
         // Function 은 객체 T를 매개변수로 받아서 처리한 후 R로 반환하는 함수형 인터페이스다.

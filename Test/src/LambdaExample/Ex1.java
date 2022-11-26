@@ -3,12 +3,9 @@ package LambdaExample;
 public class Ex1 {
 
     public static void main(String[] args) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 3; i++) {
-                    System.out.println("Hello!");
-                }
+        new Thread(() -> {
+            for (int i = 0; i < 3; i++) {
+                System.out.println("Hello!");
             }
         }).start();
     }
