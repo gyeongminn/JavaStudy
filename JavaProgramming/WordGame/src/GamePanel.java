@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -12,10 +10,13 @@ public class GamePanel extends JPanel {
     private final int LABEL_HEIGHT = 40;
 
     private JTextField inputField = new JTextField(MAX_WORDS);
-    WordList wordList;
+    private WordList wordList;
     private Vector<Word> currentWords = new Vector<>(MAX_WORDS);
     private GroundPanel groundPanel = new GroundPanel();
     private GameThread gameThread = null;
+
+    private int healthPoint = 0;
+    private JProgressBar healthBar = new JProgressBar(JProgressBar.HORIZONTAL, 0,100);
 
 
     public GamePanel(WordList wordList, ScorePanel scorePanel) {
@@ -29,23 +30,21 @@ public class GamePanel extends JPanel {
         inputPanel.add(inputField, BorderLayout.SOUTH);
         add(inputPanel, BorderLayout.SOUTH);
 
-        inputField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JTextField textField = (JTextField) e.getSource();
-                for (Word word : currentWords) {
-                    if (textField.getText().equals(word.getName())) {
-                        scorePanel.increase();
-                        word.setY(groundPanel.getHeight());
-                        break;
-                    }
+        inputField.addActionListener(e -> {
+            JTextField textField = (JTextField) e.getSource();
+            for (Word word : currentWords) {
+                if (textField.getText().equals(word.getName())) {
+                    scorePanel.increase();
+                    word.setY(10000);
+                    break;
                 }
-                textField.setText("");
             }
+            textField.setText("");
         });
     }
 
     public void startGame() {
+        groundPanel.initHealthBar();
         if (gameThread == null) {
             gameThread = new GameThread();
             gameThread.start();
@@ -76,6 +75,9 @@ public class GamePanel extends JPanel {
             JLabel label = word.getLabel();
             label.setLocation((int) (word.getX()), (int) word.getY());
             if (label.getY() >= groundPanel.getHeight()) {
+                if (label.getY() < 10000) {
+                    healthPoint -= 10;
+                }
                 groundPanel.remove(label);
                 iterator.remove();
             }
@@ -85,13 +87,21 @@ public class GamePanel extends JPanel {
     class GroundPanel extends JPanel {
 
         public GroundPanel() {
+            setLayout(null);
             setBackground(Color.GRAY);
+        }
+
+        public void initHealthBar() {
+            healthPoint = 100;
+            healthBar.setForeground(Color.RED);
+            healthBar.setLocation(100, 10);
+            healthBar.setSize(500,30);
+            add(healthBar);
         }
     }
 
 
     class GameThread extends Thread {
-
         public GameThread() {
             super("GameThread");
         }
@@ -100,12 +110,13 @@ public class GamePanel extends JPanel {
         public void run() {
             int count = 0;
             while (true) {
+                if (count % 1000 == 0) {
+                    addWord();
+                }
+                healthBar.setValue(healthPoint);
+                setWords();
+                count++;
                 try {
-                    if (count % 1000 == 0) {
-                        addWord();
-                    }
-                    setWords();
-                    count++;
                     sleep(1);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);

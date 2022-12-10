@@ -6,7 +6,6 @@ public class ScorePanel extends JPanel {
     private JLabel scoreLabel = new JLabel(Integer.toString(score));
 
     public ScorePanel() {
-        setBackground(Color.YELLOW);
         add(new JLabel("점수"));
         add(scoreLabel);
     }
