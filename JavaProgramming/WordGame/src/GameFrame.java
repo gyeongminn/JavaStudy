@@ -1,9 +1,14 @@
+import words.WordList;
+
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GameFrame extends JFrame {
+
     private ScorePanel scorePanel = new ScorePanel();
     private EditPanel editPanel = new EditPanel();
 
@@ -17,35 +22,49 @@ public class GameFrame extends JFrame {
     }
 
     private void initFrame() {
-        setTitle("단어 게임");
+        setTitle("VSCode Typing Game");
         setSize(1000, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setIconImage(Toolkit.getDefaultToolkit().getImage("vscode.png"));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("images/vscode.png"));
         setResizable(false);
         setVisible(true);
     }
 
     private void initMenuBar() {
         JMenuBar bar = new JMenuBar();
+        bar.setBackground(new Color(60,60,60));
+        bar.setBorder(BorderFactory.createEmptyBorder());
         this.setJMenuBar(bar);
 
-        JMenu fileMenu = new JMenu("File");
+        JMenu gameMenu = new JMenu("Game");
         JMenu editMenu = new JMenu("Edit");
-        JMenu sourceMenu = new JMenu("Source");
 
-        bar.add(fileMenu);
+        initGameMenu(gameMenu);
+        bar.add(gameMenu);
+
+        initEditMenu(editMenu);
         bar.add(editMenu);
-        bar.add(sourceMenu);
+    }
 
-        JMenuItem newItem = new JMenuItem("Start Game");
-        newItem.addActionListener(e -> gamePanel.startGame());
-        JMenuItem openItem = new JMenuItem("Open File");
+    private void initEditMenu(JMenu editMenu) {
+        editMenu.setForeground(Color.WHITE);
+        JMenuItem show = new JMenuItem("show");
+        show.addActionListener(e -> gamePanel.startGame());
+        editMenu.add(show);
+    }
+
+    private void initGameMenu(JMenu gameMenu) {
+        gameMenu.setForeground(Color.WHITE);
+        JMenuItem startGame = new JMenuItem("Start Game");
+        startGame.addActionListener(e -> gamePanel.startGame());
+        JMenuItem pauseGame = new JMenuItem("Pause Game");
+        pauseGame.addActionListener(e -> gamePanel.pauseGame());
         JMenuItem exitItem = new JMenuItem("Exit");
-
-        fileMenu.add(newItem);
-        fileMenu.add(openItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitItem);
+        exitItem.addActionListener(e -> System.exit(1));
+        gameMenu.add(startGame);
+        gameMenu.add(pauseGame);
+        gameMenu.addSeparator();
+        gameMenu.add(exitItem);
     }
 
     private void initSplitPane() {
@@ -53,16 +72,17 @@ public class GameFrame extends JFrame {
         horizontalPane.setDividerSize(0);
         horizontalPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         horizontalPane.setDividerLocation(300);
-        getContentPane().add(horizontalPane, BorderLayout.CENTER);
+        horizontalPane.setBorder(new LineBorder(Color.GRAY));
 
         JSplitPane verticalPane = new JSplitPane();
         verticalPane.setDividerSize(0);
         verticalPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         verticalPane.setDividerLocation(300);
+        verticalPane.setBorder(new LineBorder(Color.GRAY));
 
+        getContentPane().add(horizontalPane, BorderLayout.CENTER);
         horizontalPane.setLeftComponent(verticalPane);
         horizontalPane.setRightComponent(gamePanel);
-
         verticalPane.setTopComponent(scorePanel);
         verticalPane.setBottomComponent(editPanel);
     }

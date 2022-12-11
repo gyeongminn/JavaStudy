@@ -1,3 +1,5 @@
+package words;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -31,7 +33,7 @@ public class Word {
                 return Color.BLUE;
             }
             default -> {
-                return Color.BLACK;
+                return Color.WHITE;
             }
         }
     }
