@@ -28,7 +28,7 @@ public class GamePanel extends JPanel {
     private Color recentColor = null;
     private int healthPoint = 0;
     private boolean paused = false;
-    private JProgressBar healthBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
+    private JProgressBar healthBar;
 
     private boolean coffeeFlag = false;
     private boolean energyDrinkFlag = false;
@@ -51,9 +51,16 @@ public class GamePanel extends JPanel {
         initInputField(scorePanel, inputPanel, comboLabel);
     }
 
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        g.setColor(new Color(71, 71, 71));
+        g.drawRect(0, 592, 700, 1);
+    }
+
     private void initGroundPanel() {
         groundPanel.setBackground(new Color(30, 30, 30));
-        groundPanel.setBorder(new LineBorder(Color.GRAY));
+        groundPanel.setBorder(BorderFactory.createEmptyBorder());
         setLayout(new BorderLayout());
         add(groundPanel, BorderLayout.CENTER);
         groundPanel.addMouseListener(new MouseAdapter() {
@@ -78,29 +85,30 @@ public class GamePanel extends JPanel {
                 }
             }
         });
+
     }
 
     private void initInputField(ScorePanel scorePanel, JPanel inputPanel, JLabel comboLabel) {
         inputPanel.setLayout(null);
-        inputPanel.setBackground(Color.BLACK);
-        inputPanel.setBorder(new LineBorder(Color.GRAY));
+        inputPanel.setBackground(new Color(30, 30, 30));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder());
         inputPanel.setPreferredSize(new Dimension(30, 150));
 
         JLabel terminalLabel = new JLabel("Terminal");
         terminalLabel.setFont(new Font("consolas", Font.PLAIN, 16));
-        terminalLabel.setBounds(30, 0, 100, 40);
+        terminalLabel.setBounds(20, 4, 100, 40);
         terminalLabel.setForeground(Color.WHITE);
 
         JLabel dirLabel = new JLabel("C:\\Users> ");
         dirLabel.setFont(new Font("consolas", Font.PLAIN, 18));
-        dirLabel.setBounds(30, 1, 130, 100);
+        dirLabel.setBounds(20, 4, 130, 100);
         dirLabel.setForeground(Color.WHITE);
 
         JTextField inputField = new JTextField();
         inputField.setFont(new Font("consolas", Font.PLAIN, 18));
-        inputField.setBounds(130, 1, 500, 100);
-        inputField.setBackground(Color.BLACK);
-        inputField.setBorder(new LineBorder(Color.BLACK));
+        inputField.setBounds(120, 4, 500, 100);
+        inputField.setBackground(new Color(30, 30, 30));
+        inputField.setBorder(BorderFactory.createEmptyBorder());
         inputField.setForeground(Color.YELLOW);
 
         inputPanel.add(terminalLabel);
@@ -130,6 +138,8 @@ public class GamePanel extends JPanel {
             }
             textField.setText("");
         });
+
+
     }
 
     private void command(String command) {
@@ -241,10 +251,11 @@ public class GamePanel extends JPanel {
         }
 
         public void initHealthBar() {
+            healthBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 100);
             healthPoint = 100;
             healthBar.setForeground(Color.RED);
-            healthBar.setLocation(100, 10);
-            healthBar.setSize(500, 30);
+            healthBar.setLocation(100, 20);
+            healthBar.setSize(500, 20);
             add(healthBar);
         }
     }

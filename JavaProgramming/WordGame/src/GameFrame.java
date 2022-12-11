@@ -14,6 +14,7 @@ public class GameFrame extends JFrame {
 
     private WordList wordList = new WordList();
     private GamePanel gamePanel = new GamePanel(wordList, scorePanel);
+    private MenuPanel menuPanel = new MenuPanel();
 
     public GameFrame() {
         initMenuBar();
@@ -37,13 +38,26 @@ public class GameFrame extends JFrame {
         this.setJMenuBar(bar);
 
         JMenu gameMenu = new JMenu("Game");
-        JMenu editMenu = new JMenu("Edit");
-
         initGameMenu(gameMenu);
         bar.add(gameMenu);
 
+        JMenu editMenu = new JMenu("Edit");
         initEditMenu(editMenu);
         bar.add(editMenu);
+
+        JMenu languageMenu = new JMenu("Language");
+        initLanguageMenu(languageMenu);
+        bar.add(languageMenu);
+    }
+
+    private void initLanguageMenu(JMenu languageMenu) {
+        languageMenu.setForeground(Color.WHITE);
+        JMenuItem clang = new JMenuItem("C/C++");
+        languageMenu.add(clang);
+        JMenuItem java = new JMenuItem("Java");
+        languageMenu.add(java);
+        JMenuItem python = new JMenuItem("Python");
+        languageMenu.add(python);
     }
 
     private void initEditMenu(JMenu editMenu) {
@@ -72,18 +86,18 @@ public class GameFrame extends JFrame {
         horizontalPane.setDividerSize(0);
         horizontalPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         horizontalPane.setDividerLocation(300);
-        horizontalPane.setBorder(new LineBorder(Color.GRAY));
+        horizontalPane.setBorder(BorderFactory.createEmptyBorder());
 
-        JSplitPane verticalPane = new JSplitPane();
-        verticalPane.setDividerSize(0);
-        verticalPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        verticalPane.setDividerLocation(300);
-        verticalPane.setBorder(new LineBorder(Color.GRAY));
+        JSplitPane menuSplitPane = new JSplitPane();
+        menuSplitPane.setDividerSize(0);
+        menuSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        menuSplitPane.setDividerLocation(50);
+        menuSplitPane.setBorder(BorderFactory.createEmptyBorder());
 
         getContentPane().add(horizontalPane, BorderLayout.CENTER);
-        horizontalPane.setLeftComponent(verticalPane);
+        horizontalPane.setLeftComponent(menuSplitPane);
         horizontalPane.setRightComponent(gamePanel);
-        verticalPane.setTopComponent(scorePanel);
-        verticalPane.setBottomComponent(editPanel);
+        menuSplitPane.setLeftComponent(menuPanel);
+        menuSplitPane.setRightComponent(scorePanel);
     }
 }
