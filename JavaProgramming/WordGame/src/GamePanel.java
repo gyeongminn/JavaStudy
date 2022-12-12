@@ -22,13 +22,14 @@ public class GamePanel extends JPanel {
     private ScorePanel scorePanel;
     private GameThread gameThread = null;
     private ItemThread itemThread = null;
+    private JProgressBar healthBar;
+
     private double delay = 2;
     private int combo = 1;
     private int boost = 1;
     private Color recentColor = null;
     private int healthPoint = 0;
     private boolean paused = false;
-    private JProgressBar healthBar;
 
     private boolean coffeeFlag = false;
     private boolean energyDrinkFlag = false;
@@ -334,7 +335,6 @@ public class GamePanel extends JPanel {
                             count = 1;
                         }
                     }
-
                     count++;
                     sleep(100);
                 } catch (InterruptedException e) {

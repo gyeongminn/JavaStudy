@@ -14,7 +14,9 @@ public class GameFrame extends JFrame {
 
     private WordList wordList = new WordList();
     private GamePanel gamePanel = new GamePanel(wordList, scorePanel);
-    private MenuPanel menuPanel = new MenuPanel();
+    private MenuPanel menuPanel = new MenuPanel(this);
+
+    private JSplitPane menuSplitPane = new JSplitPane();
 
     public GameFrame() {
         initMenuBar();
@@ -88,7 +90,6 @@ public class GameFrame extends JFrame {
         horizontalPane.setDividerLocation(300);
         horizontalPane.setBorder(BorderFactory.createEmptyBorder());
 
-        JSplitPane menuSplitPane = new JSplitPane();
         menuSplitPane.setDividerSize(0);
         menuSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         menuSplitPane.setDividerLocation(50);
@@ -99,5 +100,15 @@ public class GameFrame extends JFrame {
         horizontalPane.setRightComponent(gamePanel);
         menuSplitPane.setLeftComponent(menuPanel);
         menuSplitPane.setRightComponent(scorePanel);
+    }
+
+    public void setScorePanel() {
+        menuSplitPane.setRightComponent(scorePanel);
+        menuSplitPane.setDividerLocation(50);
+    }
+
+    public void setEditPanel() {
+        menuSplitPane.setRightComponent(editPanel);
+        menuSplitPane.setDividerLocation(50);
     }
 }
