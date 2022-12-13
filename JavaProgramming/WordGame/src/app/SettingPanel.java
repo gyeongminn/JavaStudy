@@ -58,19 +58,19 @@ public class SettingPanel extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                wordList.loadWordFile("java.txt"); // 단어 파일 불러오기
+                wordList.loadWordFile("data/java.txt"); // 단어 파일 불러오기
             }
         });
 
         // Python 선택 버튼
-        python = new JRadioButton("Python");
+        python = new JRadioButton("data/Python");
         initRadioButton(group, python);
         python.setBounds(20, 110, 100, 30);
         python.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                wordList.loadWordFile("python.txt"); // 단어 파일 불러오기
+                wordList.loadWordFile("data/python.txt"); // 단어 파일 불러오기
             }
         });
     }
@@ -118,17 +118,17 @@ public class SettingPanel extends JPanel {
     }
 
     public void setLanguagePython() { // 언어 설정
-        wordList.loadWordFile("python.txt");
+        wordList.loadWordFile("data/python.txt");
         python.setSelected(true);
     }
 
     public void setLanguageJava() { // 언어 설정
-        wordList.loadWordFile("java.txt");
+        wordList.loadWordFile("data/java.txt");
         java.setSelected(true);
     }
 
     public void setLanguageC() { // 언어 설정
-        wordList.loadWordFile("clang.txt");
+        wordList.loadWordFile("data/clang.txt");
         clang.setSelected(true);
     }
 

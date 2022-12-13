@@ -12,7 +12,7 @@ public class WordList {
     private Vector<String> words = new Vector<>(1000); // 단어가 저장될 벡터
 
     public WordList() {
-        loadWordFile("clang.txt"); // 기본 언어 불러오기
+        loadWordFile("data/clang.txt"); // 기본 언어 불러오기
     }
 
     public void loadWordFile(String file) {
@@ -41,7 +41,7 @@ public class WordList {
     public void addWord(String word) {
         words.add(word.trim());
         try {
-            FileWriter fw = new FileWriter("java.txt", true); // 파일 쓰기
+            FileWriter fw = new FileWriter("data/clang.txt", true); // 파일 쓰기
             fw.write(word.trim() + "\n"); // 파일에 단어 쓰기
             fw.flush();
         } catch (IOException e) { // 단어 입력 실패

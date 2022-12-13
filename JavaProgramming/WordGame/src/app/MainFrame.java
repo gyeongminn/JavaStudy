@@ -29,7 +29,7 @@ public class MainFrame extends JFrame {
 
     private void loadScore() { // 단어 불러오기
         try {
-            Scanner scanner = new Scanner(new FileReader("data.txt"));
+            Scanner scanner = new Scanner(new FileReader("data/data.txt"));
             while (scanner.hasNext()) {
                 scorePanel.setScore(Integer.parseInt(scanner.nextLine().trim())); // 불러온 값을 스코어에 저장
             }

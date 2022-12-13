@@ -315,7 +315,7 @@ public class GamePanel extends JPanel { // 게임이 진행되는 Panel
 
     public void saveScore() { // 스코어 저장
         try {
-            FileWriter fw = new FileWriter("data.txt");
+            FileWriter fw = new FileWriter("data/data.txt");
             fw.write(Integer.toString(scorePanel.getScore())); // 파일에 스코어 String 으로 저장
             fw.flush();
         } catch (IOException e) {
