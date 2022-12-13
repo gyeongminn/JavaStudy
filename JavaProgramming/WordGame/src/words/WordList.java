@@ -12,13 +12,19 @@ public class WordList {
     private Vector<String> words = new Vector<>(26000);
 
     public WordList() {
+        loadWordFile("clang.txt");
+    }
+
+    public void loadWordFile(String file) {
+        words.removeAllElements(); // 단어 리스트 초기화
         try {
-            Scanner scanner = new Scanner(new FileReader("words.txt"));
+            Scanner scanner = new Scanner(new FileReader(file));
             while (scanner.hasNext()) {
                 words.add(scanner.nextLine());
             }
             scanner.close();
         } catch (FileNotFoundException e) {
+            System.out.println("cannot load file");
             System.exit(1);
         }
     }
@@ -35,7 +41,7 @@ public class WordList {
     public void addWord(String word) {
         words.add(word.trim());
         try {
-            FileWriter fw = new FileWriter("words.txt", true);
+            FileWriter fw = new FileWriter("java.txt", true);
             fw.write(word.trim() + "\n");
             fw.flush();
         } catch (IOException e) {

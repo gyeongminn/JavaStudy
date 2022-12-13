@@ -3,6 +3,6 @@ package app;
 public class App {
 
     public static void main(String[] args) {
-        new GameFrame();
+        new MainFrame(); // 메인 프레임 실행
     }
 }
