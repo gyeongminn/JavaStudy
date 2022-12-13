@@ -4,24 +4,24 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Word {
-    private String name;
-    private double x;
-    private double y;
-    private double speed;
-    private Color color;
 
-    JLabel label;
+    private String name; // 단어 이름
+    private double x; // x좌표
+    private double y; // y좌표
+    private double speed; // 단어가 내려가는 속도
+    private Color color; // 단어 색상
+    private JLabel label;
 
-    public Word(String word, int x, int y, double speed) {
+    public Word(String word, int x, int y, double speed) { // 생성자
         this.name = word;
         this.x = x;
         this.y = y;
         this.speed = speed;
         label = new JLabel(word);
-        color = getRandomColor();
+        color = getRandomColor(); // 랜덤 색상
     }
 
-    private Color getRandomColor() {
+    private Color getRandomColor() { // 랜덤 색상 가져오기
         switch ((int) (Math.random() * 5)) {
             case 0 -> {
                 return Color.RED;
@@ -38,31 +38,31 @@ public class Word {
         }
     }
 
-    public Color getColor() {
+    public Color getColor() { // 색상 가져오기
         return color;
     }
 
-    public String getName() {
+    public String getName() { // 단어 이름 가져오기
         return name;
     }
 
-    public double getX() {
+    public double getX() { // x좌표 가져오기
         return x;
     }
 
-    public double getY() {
+    public double getY() { // y좌표 가져오기
         return y;
     }
 
-    public double getSpeed() {
+    public double getSpeed() { // 속도 가져오기
         return speed;
     }
 
-    public JLabel getLabel() {
+    public JLabel getLabel() { // 라벨 가져오기
         return label;
     }
 
-    public void setY(double y) {
+    public void setY(double y) { // y좌표 설정
         this.y = y;
     }
 }

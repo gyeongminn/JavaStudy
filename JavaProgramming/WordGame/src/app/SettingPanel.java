@@ -11,6 +11,12 @@ public class SettingPanel extends JPanel {
 
     private GamePanel gamePanel;
     private WordList wordList;
+    private JRadioButton lv1;
+    private JRadioButton lv2;
+    private JRadioButton lv3;
+    protected JRadioButton clang;
+    protected JRadioButton java;
+    protected JRadioButton python;
 
     public SettingPanel(GamePanel gamePanel, WordList wordList) {
         this.wordList = wordList;
@@ -31,7 +37,8 @@ public class SettingPanel extends JPanel {
 
         ButtonGroup group = new ButtonGroup(); // 버튼 그룹 설정
 
-        JRadioButton clang = new JRadioButton("C/C++"); // C언어 선택 버튼
+        // C언어 선택 버튼
+        clang = new JRadioButton("C/C++");
         initRadioButton(group, clang); // 라디오 버튼 초기화
         clang.setBounds(20, 50, 100, 30);
         clang.setSelected(true); // 선택 초기값으로 설정
@@ -39,11 +46,12 @@ public class SettingPanel extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                    wordList.loadWordFile("clang.txt"); // 단어 파일 불러오기
+                wordList.loadWordFile("clang.txt"); // 단어 파일 불러오기
             }
         });
 
-        JRadioButton java = new JRadioButton("Java"); // JAVA 선택 버튼
+        // JAVA 선택 버튼
+        java = new JRadioButton("Java");
         initRadioButton(group, java);
         java.setBounds(20, 80, 100, 30);
         java.addMouseListener(new MouseAdapter() {
@@ -54,7 +62,8 @@ public class SettingPanel extends JPanel {
             }
         });
 
-        JRadioButton python = new JRadioButton("Python"); // Python 선택 버튼
+        // Python 선택 버튼
+        python = new JRadioButton("Python");
         initRadioButton(group, python);
         python.setBounds(20, 110, 100, 30);
         python.addMouseListener(new MouseAdapter() {
@@ -74,41 +83,53 @@ public class SettingPanel extends JPanel {
         titleLabel.setBounds(20, 170, 200, 24);
         add(titleLabel);
 
-        ButtonGroup group = new ButtonGroup();
+        ButtonGroup group = new ButtonGroup(); // 버튼 그룹 설정
 
-        JRadioButton lv1 = new JRadioButton("Level 1");
-        lv1.setBounds(20, 200, 100, 30);
-        lv1.setSelected(true); // 선택 초기값으로 설정
+        lv1 = new JRadioButton("Level 1");
         initRadioButton(group, lv1);
-        lv1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                gamePanel.setDivDelay(5); // 레벨 1 설정
-            }
-        });
+        lv1.setSelected(true); // 선택 초기값으로 설정
+        lv1.setBounds(20, 200, 100, 30);
+        lv1.addActionListener(e -> setLv1()); // 레벨 1 설정
 
-        JRadioButton lv2 = new JRadioButton("Level 2");
-        lv2.setBounds(20, 230, 100, 30);
+        lv2 = new JRadioButton("Level 2");
         initRadioButton(group, lv2);
-        lv2.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                gamePanel.setDivDelay(3.5); // 레벨 2 설정
-            }
-        });
+        lv2.setBounds(20, 230, 100, 30);
+        lv2.addActionListener(e -> setLv2()); // 레벨 2 설정
 
-        JRadioButton lv3 = new JRadioButton("Level 3");
-        lv3.setBounds(20, 260, 100, 30);
+        lv3 = new JRadioButton("Level 3");
         initRadioButton(group, lv3);
-        lv3.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                gamePanel.setDivDelay(1); // 레벨 3 설정
-            }
-        });
+        lv3.setBounds(20, 260, 100, 30);
+        lv3.addActionListener(e -> setLv3()); // 레벨 3 설정
+    }
+
+    public void setLv1() { // 레벨 설정
+        gamePanel.setDivDelay(5);
+        lv1.setSelected(true);
+    }
+
+    public void setLv2() { // 레벨 설정
+        gamePanel.setDivDelay(3.5);
+        lv2.setSelected(true);
+    }
+
+    public void setLv3() { // 레벨 설정
+        gamePanel.setDivDelay(1);
+        lv3.setSelected(true);
+    }
+
+    public void setLanguagePython() { // 언어 설정
+        wordList.loadWordFile("python.txt");
+        python.setSelected(true);
+    }
+
+    public void setLanguageJava() { // 언어 설정
+        wordList.loadWordFile("java.txt");
+        java.setSelected(true);
+    }
+
+    public void setLanguageC() { // 언어 설정
+        wordList.loadWordFile("clang.txt");
+        clang.setSelected(true);
     }
 
     private void initRadioButton(ButtonGroup group, JRadioButton radioButton) {

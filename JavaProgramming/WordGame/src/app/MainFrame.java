@@ -81,21 +81,48 @@ public class MainFrame extends JFrame {
         initViewMenu(viewMenu);
         bar.add(viewMenu);
 
-        // 언어선택 메뉴 추가
+        // 언어 선택 메뉴 추가
         JMenu languageMenu = new JMenu("Language");
         initLanguageMenu(languageMenu);
         bar.add(languageMenu);
+
+        // 레벨 선택 메뉴 추가
+        JMenu levelMenu = new JMenu("Level");
+        initLevelMenu(levelMenu);
+        bar.add(levelMenu);
+    }
+
+    private void initLevelMenu(JMenu menu) { // 언어 메뉴 초기화
+        menu.setForeground(Color.WHITE);
+        JMenuItem lv1 = new JMenuItem("Level 1");
+        menu.add(lv1);
+        lv1.addActionListener(e -> settingPanel.setLv1());
+
+        JMenuItem lv2 = new JMenuItem("Level 2");
+        menu.add(lv2);
+        lv2.addActionListener(e -> settingPanel.setLv2());
+
+        JMenuItem lv3 = new JMenuItem("Level 3");
+        menu.add(lv3);
+        lv3.addActionListener(e -> settingPanel.setLv3());
     }
 
     private void initLanguageMenu(JMenu languageMenu) { // 언어 메뉴 초기화
         languageMenu.setForeground(Color.WHITE);
         JMenuItem clang = new JMenuItem("C/C++");
         languageMenu.add(clang);
+        clang.addActionListener(e -> settingPanel.setLanguageC());
+
         JMenuItem java = new JMenuItem("Java");
         languageMenu.add(java);
+        java.addActionListener(e -> settingPanel.setLanguageJava());
+
         JMenuItem python = new JMenuItem("Python");
         languageMenu.add(python);
+        python.addActionListener(e -> settingPanel.setLanguagePython());
     }
+
+
 
     private void initViewMenu(JMenu editMenu) { // 보기 메뉴 추가
         editMenu.setForeground(Color.WHITE);
