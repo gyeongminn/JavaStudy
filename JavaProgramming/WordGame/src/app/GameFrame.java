@@ -1,27 +1,42 @@
+package app;
+
 import words.WordList;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 
 public class GameFrame extends JFrame {
 
     private ScorePanel scorePanel = new ScorePanel();
-    private EditPanel editPanel = new EditPanel();
 
     private WordList wordList = new WordList();
+    private EditPanel editPanel = new EditPanel(wordList);
     private GamePanel gamePanel = new GamePanel(wordList, scorePanel);
     private MenuPanel menuPanel = new MenuPanel(this);
-
+    private JPanel statusPanel = new JPanel();
+    private SettingPanel settingPanel = new SettingPanel();
     private JSplitPane menuSplitPane = new JSplitPane();
 
     public GameFrame() {
         initMenuBar();
         initSplitPane();
+        initStatusPane();
         initFrame();
+    }
+
+    private void initStatusPane() {
+        statusPanel.setLayout(new BorderLayout());
+        statusPanel.setBackground(new Color(62, 120, 201));
+
+        JLabel nameLabel = new JLabel("2171333 이경민 ");
+        nameLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
+        nameLabel.setForeground(Color.WHITE);
+        statusPanel.add(nameLabel, BorderLayout.EAST);
+
+        JLabel titleLabel = new JLabel(" VSCode Typing Game");
+        titleLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
+        titleLabel.setForeground(Color.WHITE);
+        statusPanel.add(titleLabel, BorderLayout.WEST);
     }
 
     private void initFrame() {
@@ -43,9 +58,9 @@ public class GameFrame extends JFrame {
         initGameMenu(gameMenu);
         bar.add(gameMenu);
 
-        JMenu editMenu = new JMenu("Edit");
-        initEditMenu(editMenu);
-        bar.add(editMenu);
+        JMenu viewMenu = new JMenu("View");
+        initViewMenu(viewMenu);
+        bar.add(viewMenu);
 
         JMenu languageMenu = new JMenu("Language");
         initLanguageMenu(languageMenu);
@@ -62,28 +77,50 @@ public class GameFrame extends JFrame {
         languageMenu.add(python);
     }
 
-    private void initEditMenu(JMenu editMenu) {
+    private void initViewMenu(JMenu editMenu) {
         editMenu.setForeground(Color.WHITE);
-        JMenuItem show = new JMenuItem("show");
-        show.addActionListener(e -> gamePanel.startGame());
+
+        JMenuItem show = new JMenuItem("Score");
+        show.addActionListener(e -> setScorePanel());
         editMenu.add(show);
+
+        JMenuItem edit = new JMenuItem("Edit");
+        edit.addActionListener(e -> setEditPanel());
+        editMenu.add(edit);
+
+        JMenuItem setting = new JMenuItem("Settings");
+        setting.addActionListener(e -> setSettingPanel());
+        editMenu.add(setting);
     }
 
     private void initGameMenu(JMenu gameMenu) {
         gameMenu.setForeground(Color.WHITE);
+
         JMenuItem startGame = new JMenuItem("Start Game");
         startGame.addActionListener(e -> gamePanel.startGame());
+        gameMenu.add(startGame);
+
         JMenuItem pauseGame = new JMenuItem("Pause Game");
         pauseGame.addActionListener(e -> gamePanel.pauseGame());
+        gameMenu.add(pauseGame);
+
+        JMenuItem stopGame = new JMenuItem("Stop Game");
+        stopGame.addActionListener(e -> gamePanel.gameOver());
+        gameMenu.add(stopGame);
+        gameMenu.addSeparator();
+
         JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener(e -> System.exit(1));
-        gameMenu.add(startGame);
-        gameMenu.add(pauseGame);
-        gameMenu.addSeparator();
         gameMenu.add(exitItem);
     }
 
     private void initSplitPane() {
+        JSplitPane verticalPane = new JSplitPane();
+        verticalPane.setDividerSize(0);
+        verticalPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        verticalPane.setDividerLocation(720);
+        verticalPane.setBorder(BorderFactory.createEmptyBorder());
+
         JSplitPane horizontalPane = new JSplitPane();
         horizontalPane.setDividerSize(0);
         horizontalPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
@@ -95,7 +132,9 @@ public class GameFrame extends JFrame {
         menuSplitPane.setDividerLocation(50);
         menuSplitPane.setBorder(BorderFactory.createEmptyBorder());
 
-        getContentPane().add(horizontalPane, BorderLayout.CENTER);
+        getContentPane().add(verticalPane,BorderLayout.CENTER);
+        verticalPane.setTopComponent(horizontalPane);
+        verticalPane.setBottomComponent(statusPanel);
         horizontalPane.setLeftComponent(menuSplitPane);
         horizontalPane.setRightComponent(gamePanel);
         menuSplitPane.setLeftComponent(menuPanel);
@@ -109,6 +148,11 @@ public class GameFrame extends JFrame {
 
     public void setEditPanel() {
         menuSplitPane.setRightComponent(editPanel);
+        menuSplitPane.setDividerLocation(50);
+    }
+
+    public void setSettingPanel() {
+        menuSplitPane.setRightComponent(settingPanel);
         menuSplitPane.setDividerLocation(50);
     }
 }

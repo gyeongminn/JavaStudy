@@ -1,8 +1,9 @@
+package app;
+
 import items.*;
 import words.*;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,15 +17,18 @@ public class GamePanel extends JPanel {
     private final int LABEL_HEIGHT = 40;
 
     private WordList wordList;
-    private Vector<Word> currentWords = new Vector<>(MAX);
-    private Vector<Item> currentItems = new Vector<>(MAX);
+    private Vector<Word> currentWords;
+    private Vector<Item> currentItems;
     private GroundPanel groundPanel;
     private ScorePanel scorePanel;
+    private JLabel comboLabel;
+    private JLabel gameOverLabel;
+
     private GameThread gameThread = null;
     private ItemThread itemThread = null;
     private JProgressBar healthBar;
 
-    private double delay = 2;
+    private double divDelay = 2;
     private int combo = 1;
     private int boost = 1;
     private Color recentColor = null;
@@ -40,13 +44,17 @@ public class GamePanel extends JPanel {
         this.wordList = wordList;
         this.scorePanel = scorePanel;
 
+        currentWords = new Vector<>(MAX);
+        currentItems = new Vector<>(MAX);
+        gameOverLabel = new JLabel("GAME OVER");
+
         groundPanel = new GroundPanel();
         initGroundPanel();
 
         JPanel inputPanel = new JPanel();
         add(inputPanel, BorderLayout.SOUTH);
 
-        JLabel comboLabel = new JLabel("Combo");
+        comboLabel = new JLabel("Combo");
         initComboLabel(comboLabel);
 
         initInputField(scorePanel, inputPanel, comboLabel);
@@ -56,7 +64,7 @@ public class GamePanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         g.setColor(new Color(71, 71, 71));
-        g.drawRect(0, 592, 700, 1);
+        g.drawRect(0, 572, 700, 1);
     }
 
     private void initGroundPanel() {
@@ -81,6 +89,7 @@ public class GamePanel extends JPanel {
                             napFlag = true;
                         }
                         item.setY(10000);
+                        scorePanel.addItemCount();
                         break;
                     }
                 }
@@ -132,7 +141,8 @@ public class GamePanel extends JPanel {
                         comboLabel.setVisible(false);
                     }
                     recentColor = word.getColor();
-                    scorePanel.increase(10 * combo * boost);
+                    scorePanel.addScore(10 * combo * boost);
+                    scorePanel.addWordCount();
                     word.setY(10000);
                     break;
                 }
@@ -149,7 +159,7 @@ public class GamePanel extends JPanel {
         } else if (command.equals("pause")) {
             pauseGame();
         } else if (command.equals("stop")) {
-            pauseGame();
+            gameOver();
         } else if (command.equals("exit")) {
             System.exit(1);
         }
@@ -165,13 +175,12 @@ public class GamePanel extends JPanel {
     }
 
     public void startGame() {
-        if (gameThread == null) {
-            groundPanel.initHealthBar();
-            gameThread = new GameThread();
-            gameThread.start();
-            itemThread = new ItemThread();
-            itemThread.start();
-        }
+        gameOverLabel.setVisible(false);
+        groundPanel.initHealthBar();
+        gameThread = new GameThread();
+        gameThread.start();
+        itemThread = new ItemThread();
+        itemThread.start();
         paused = false;
     }
 
@@ -216,7 +225,7 @@ public class GamePanel extends JPanel {
         Iterator<Item> iterator = currentItems.iterator();
         while (iterator.hasNext()) {
             Item item = iterator.next();
-            item.setY(item.getY() + (item.getSpeed() / delay));
+            item.setY(item.getY() + (item.getSpeed() / divDelay));
             JLabel label = item.getLabel();
             label.setSize(50, 50);
             label.setLocation((int) (item.getX()), (int) item.getY());
@@ -231,7 +240,7 @@ public class GamePanel extends JPanel {
         Iterator<Word> iterator = currentWords.iterator();
         while (iterator.hasNext()) {
             Word word = iterator.next();
-            word.setY(word.getY() + (word.getSpeed() / delay));
+            word.setY(word.getY() + (word.getSpeed() / divDelay));
             JLabel label = word.getLabel();
             label.setLocation((int) word.getX(), (int) word.getY());
             if (label.getY() >= groundPanel.getHeight()) {
@@ -242,6 +251,33 @@ public class GamePanel extends JPanel {
                 iterator.remove();
             }
         }
+    }
+
+    public void gameOver() {
+        if (gameThread == null) {
+            return;
+        }
+        pauseGame();
+        gameThread.interrupt();
+        itemThread.interrupt();
+        for (Word word : currentWords) {
+            word.getLabel().setVisible(false);
+            groundPanel.remove(word.getLabel());
+        }
+        currentWords.removeAllElements();
+        for (Item item : currentItems) {
+            item.getLabel().setVisible(false);
+            groundPanel.remove(item.getLabel());
+        }
+        currentItems.removeAllElements();
+        healthBar.setVisible(false);
+        comboLabel.setVisible(false);
+
+        gameOverLabel.setFont(new Font("consolas", Font.PLAIN, 100));
+        gameOverLabel.setForeground(Color.WHITE);
+        gameOverLabel.setBounds(100, 100, 500, 300);
+        groundPanel.add(gameOverLabel);
+        gameOverLabel.setVisible(true);
     }
 
     class GroundPanel extends JPanel {
@@ -271,6 +307,16 @@ public class GamePanel extends JPanel {
         public void run() {
             long count = 0;
             while (true) {
+                try {
+                    if (paused) {
+                        sleep(1000);
+                        continue;
+                    } else {
+                        sleep(1);
+                    }
+                } catch (InterruptedException e) {
+                    return;
+                }
                 if (count % 1000 == 0) {
                     healthPoint--;
                     addWord();
@@ -282,14 +328,8 @@ public class GamePanel extends JPanel {
                 setWords();
                 setItems();
                 healthBar.setValue(healthPoint);
-                try {
-                    if (paused) {
-                        sleep(1000);
-                    } else {
-                        sleep(1);
-                    }
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                if (healthPoint <= 0) {
+                    gameOver();
                 }
             }
         }
@@ -321,16 +361,16 @@ public class GamePanel extends JPanel {
                     if (googleFlag) {
                         for (Word word : currentWords) {
                             word.setY(10000);
-                            scorePanel.increase((int) (10 * boost * 0.5));
+                            scorePanel.addScore((int) (10 * boost * 0.5));
                         }
                         googleFlag = false;
                     }
                     if (napFlag) {
                         healthPoint += 20;
                         if (healthPoint > 100) healthPoint = 100;
-                        delay = 10;
+                        divDelay = 10;
                         if (count % 50 == 0) {
-                            delay = 2;
+                            divDelay = 2;
                             napFlag = false;
                             count = 1;
                         }
@@ -338,7 +378,7 @@ public class GamePanel extends JPanel {
                     count++;
                     sleep(100);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    return;
                 }
             }
         }
