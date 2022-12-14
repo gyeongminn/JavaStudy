@@ -254,3 +254,4 @@ wmemmove
 wmemset
 wprintf
 wscanf
+app

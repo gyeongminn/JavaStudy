@@ -40,6 +40,7 @@ public class SettingPanel extends JPanel {
         // C언어 선택 버튼
         clang = new JRadioButton("C/C++");
         initRadioButton(group, clang); // 라디오 버튼 초기화
+        clang.setBackground(new Color(37, 37, 37));
         clang.setBounds(20, 50, 100, 30);
         clang.setSelected(true); // 선택 초기값으로 설정
         clang.addMouseListener(new MouseAdapter() {
@@ -53,6 +54,7 @@ public class SettingPanel extends JPanel {
         // JAVA 선택 버튼
         java = new JRadioButton("Java");
         initRadioButton(group, java);
+        java.setBackground(new Color(37, 37, 37));
         java.setBounds(20, 80, 100, 30);
         java.addMouseListener(new MouseAdapter() {
             @Override
@@ -63,8 +65,9 @@ public class SettingPanel extends JPanel {
         });
 
         // Python 선택 버튼
-        python = new JRadioButton("data/Python");
+        python = new JRadioButton("Python");
         initRadioButton(group, python);
+        python.setBackground(new Color(37, 37, 37));
         python.setBounds(20, 110, 100, 30);
         python.addMouseListener(new MouseAdapter() {
             @Override
@@ -88,16 +91,19 @@ public class SettingPanel extends JPanel {
         lv1 = new JRadioButton("Level 1");
         initRadioButton(group, lv1);
         lv1.setSelected(true); // 선택 초기값으로 설정
+        lv1.setBackground(new Color(37, 37, 37));
         lv1.setBounds(20, 200, 100, 30);
         lv1.addActionListener(e -> setLv1()); // 레벨 1 설정
 
         lv2 = new JRadioButton("Level 2");
         initRadioButton(group, lv2);
+        lv2.setBackground(new Color(37, 37, 37));
         lv2.setBounds(20, 230, 100, 30);
         lv2.addActionListener(e -> setLv2()); // 레벨 2 설정
 
         lv3 = new JRadioButton("Level 3");
         initRadioButton(group, lv3);
+        lv3.setBackground(new Color(37, 37, 37));
         lv3.setBounds(20, 260, 100, 30);
         lv3.addActionListener(e -> setLv3()); // 레벨 3 설정
     }

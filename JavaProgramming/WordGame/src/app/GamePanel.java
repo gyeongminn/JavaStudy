@@ -215,11 +215,15 @@ public class GamePanel extends JPanel { // 게임이 진행되는 Panel
         int x = (int) (Math.random() * (groundPanel.getWidth() - LABEL_WIDTH / 2)); // 랜덤 좌표
         double speed = Math.random() / 20 + 0.1; // 일정 범위 내 랜덤한 속도를 가진다
         Item item;
-        switch ((int) (Math.random() * 4)) { // 랜덤 아이템
+        switch ((int) (Math.random() * 7)) { // 랜덤 아이템
             case 0 -> item = new Coffee(x, 0, speed);
             case 1 -> item = new EnergyDrink(x, 0, speed);
             case 2 -> item = new Google(x, 0, speed);
             case 3 -> item = new Nap(x, 0, speed);
+            case 4 -> item = new Google(x, 0, speed);
+            case 5 -> item = new Nap(x, 0, speed);
+            case 6 -> item = new Google(x, 0, speed);
+            case 7 -> item = new Nap(x, 0, speed);
             default -> throw new IllegalStateException();
         }
         currentItems.add(item); // 벡터에 아이템 추가
@@ -361,7 +365,9 @@ public class GamePanel extends JPanel { // 게임이 진행되는 Panel
                     return;
                 }
                 if (count % 1000 == 0) {
-                    healthPoint--; // 체력 감소
+                    if (!energyDrinkFlag && !coffeeFlag) {
+                        healthPoint--;
+                    }
                 }
                 if (count % (700 * divDelay) == 0) {
                     addWord(); // 단어 추가
